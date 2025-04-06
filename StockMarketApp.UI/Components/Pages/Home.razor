@@ -1,0 +1,18 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+<div class="searchContainer">
+    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" @onkeydown="HandleKeyDown"/>
+</div>
+
+@code
+{
+    private void HandleKeyDown(KeyboardEventArgs args)
+    {
+        Console.WriteLine($"Key pressed: {args.Key}");
+        if (args.Key == "Enter")
+        {
+            Console.WriteLine("Search triggered!");
+        }
+    }
+}
