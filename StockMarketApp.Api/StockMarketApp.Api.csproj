@@ -15,4 +15,9 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\StockMarketApp.DTO\StockMarketApp.DTO.csproj" />
+      <ProjectReference Include="..\StockMarketApp.Services\StockMarketApp.Services.csproj" />
+    </ItemGroup>
+
 </Project>

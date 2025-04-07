@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using StockMarketApp.DTO;
+using StockMarketApp.Services;
 
 namespace StockMarketApp.Api.Controllers
 {
@@ -6,17 +9,18 @@ namespace StockMarketApp.Api.Controllers
     [ApiController]
     public class StockDataController : ControllerBase
     {
-        [HttpGet("test")]
-        public IActionResult SimpleTest()
+        private readonly IStockDataService _stockDataService;
+        
+        public StockDataController(IStockDataService stockDataService)
         {
-            return Ok("Works");
+            _stockDataService = stockDataService;
         }
         
         [HttpGet("intraday/{symbol}")]
-        public IActionResult GetIntradayData(string symbol)
+        public async Task<IActionResult?> GetIntradayDataAsync(string symbol,[FromQuery] string interval = "5min")
         {
-            // Your logic to call Alpha Vantage and return data
-            return Ok($"Intraday data for {symbol}"); // Placeholder
+            var result = await _stockDataService.GetIntradayDataAsync(symbol, interval);
+            return Ok(result);
         }
 
         [HttpGet("symbols/search/{keyword}")]
@@ -24,6 +28,5 @@ namespace StockMarketApp.Api.Controllers
         {
             return Ok($"Search results for {keyword}"); // Placeholder
         }
-        
     }
 }

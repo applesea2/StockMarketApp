@@ -1,3 +1,5 @@
+using StockMarketApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
+
+builder.Services.AddHttpClient<IStockDataService, StockDataService>();
 
 var app = builder.Build();
 

@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketApp.UI", "StockM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketApp.Api", "StockMarketApp.Api\StockMarketApp.Api.csproj", "{8CB2029D-D601-44E7-BD14-225516777DBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketApp.DTO", "StockMarketApp.DTO\StockMarketApp.DTO.csproj", "{FA7CF554-260B-4CD8-841F-3CDE03589623}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarketApp.Services", "StockMarketApp.Services\StockMarketApp.Services.csproj", "{25239957-8155-4362-B71A-F1CAD177FA4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{8CB2029D-D601-44E7-BD14-225516777DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CB2029D-D601-44E7-BD14-225516777DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CB2029D-D601-44E7-BD14-225516777DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA7CF554-260B-4CD8-841F-3CDE03589623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA7CF554-260B-4CD8-841F-3CDE03589623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA7CF554-260B-4CD8-841F-3CDE03589623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA7CF554-260B-4CD8-841F-3CDE03589623}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25239957-8155-4362-B71A-F1CAD177FA4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25239957-8155-4362-B71A-F1CAD177FA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25239957-8155-4362-B71A-F1CAD177FA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25239957-8155-4362-B71A-F1CAD177FA4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
