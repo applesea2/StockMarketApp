@@ -8,7 +8,6 @@ public class StockDataService : IStockDataService
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
-
     public StockDataService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
@@ -16,11 +15,10 @@ public class StockDataService : IStockDataService
     }
     public async Task<IntradayResponseDTO?> GetIntradayDataAsync(string symbol, string interval = "5min")
     {
-        string apiKey = _configuration["StockMarketApp:ApiKey"];
-        string QUERY_URL =
-            $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval={interval}&apikey={apiKey})";
+        string queryUrl =
+            $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval={interval}&apikey={_configuration["ApiKey"]})";
             
-        var json = await _httpClient.GetAsync(QUERY_URL);
+        var json = await _httpClient.GetAsync(queryUrl);
         if (!json.IsSuccessStatusCode) return null;
         var response = JsonSerializer.Deserialize<IntradayResponseDTO>(json.Content.ReadAsStringAsync().Result);
         
@@ -32,5 +30,17 @@ public class StockDataService : IStockDataService
         }
         
         return response;
+    }
+
+    public async Task<SearchDTOResponse?> GetSearchDataAsync(string keyword)
+    {
+        string apiKey = _configuration["ApiKey"];
+        string queryUrl =
+            $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={apiKey}";
+        var json = await _httpClient.GetAsync(queryUrl);
+        if (!json.IsSuccessStatusCode) return null;
+        SearchDTOResponse? searchResults = JsonSerializer.Deserialize<SearchDTOResponse>(json.Content.ReadAsStringAsync().Result);
+        return searchResults; 
+        
     }
 }
