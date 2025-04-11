@@ -23,10 +23,11 @@ namespace StockMarketApp.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("symbols/search/{keyword}")]
-        public IActionResult Search(string keyword)
+        [HttpGet("search/{keyword}")]
+        public async Task<IActionResult?> Search(string keyword)
         {
-            return Ok($"Search results for {keyword}"); // Placeholder
+            var result = await _stockDataService.GetSearchDataAsync(keyword);
+            return Ok(result);
         }
     }
 }

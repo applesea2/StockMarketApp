@@ -1,4 +1,5 @@
 using StockMarketApp.UI.Components;
+using System.Reflection.PortableExecutable;
 
 var builder = WebApplication.CreateBuilder(args);
 
