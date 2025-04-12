@@ -6,15 +6,6 @@
     margin: 0;
 }
 
-.searchContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
-}
 
 #blazor-error-ui {
     color-scheme: light only;
