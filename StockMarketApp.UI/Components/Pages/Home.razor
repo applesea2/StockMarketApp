@@ -1,18 +1,23 @@
 ﻿@page "/"
+@inject HttpClient Http
+@using StockMarketApp.DTO
+@using StockMarketApp.Services
+
 
 <PageTitle>Home</PageTitle>
-<div class="searchContainer">
-    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" @onkeydown="HandleKeyDown"/>
+<div> class="searchContainer">
+    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" @oninput="Search"/>
 </div>
 
 @code
 {
-    private void HandleKeyDown(KeyboardEventArgs args)
+    private string? searchTerm = string.Empty;
+    private SearchDTOResponse? _searchDTOResponse;
+    private bool isLoading = false;
+    private bool hasSearched = false;
+    
+    private void Search()
     {
-        Console.WriteLine($"Key pressed: {args.Key}");
-        if (args.Key == "Enter")
-        {
-            Console.WriteLine("Search triggered!");
-        }
+        
     }
 }
