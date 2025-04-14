@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using StockMarketApp.Api.Configurations;
 using StockMarketApp.DTO;
 
 namespace StockMarketApp.Services;
@@ -7,17 +9,22 @@ namespace StockMarketApp.Services;
 public class StockDataService : IStockDataService
 {
     private readonly HttpClient _httpClient;
-    private readonly IConfiguration _configuration;
-    public StockDataService(HttpClient httpClient, IConfiguration configuration)
+    private readonly AlphaVantageSettings _alphaVantageSettings;
+    public StockDataService(HttpClient httpClient, IOptions<AlphaVantageSettings> alphaVantageSettings)
     {
         _httpClient = httpClient;
-        _configuration = configuration;
+        _alphaVantageSettings = alphaVantageSettings.Value ?? throw new ArgumentNullException(nameof(alphaVantageSettings));
+
+        if (string.IsNullOrEmpty(_alphaVantageSettings.ApiKey))
+        {
+            throw new InvalidOperationException("API key is missing.");
+        }
     }
     
     public async Task<IntradayResponseDTO?> GetIntradayDataAsync(string symbol, string interval = "5min")
     {
         string queryUrl =
-            $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval={interval}&apikey={_configuration["ApiKey"]})";
+            $"{_alphaVantageSettings.BaseAddress}/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval={interval}&apikey={_alphaVantageSettings.ApiKey})";
         
         try
         {
@@ -67,14 +74,8 @@ public class StockDataService : IStockDataService
 
     public async Task<SearchDTOResponse?> GetSearchDataAsync(string keyword)
     {
-        if (string.IsNullOrEmpty(_configuration["ApiKey"]))
-        {
-            Console.WriteLine("API Key is missing");
-            return null;
-        }
-
         string queryUrl =
-            $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={_configuration["ApiKey"] ?? throw new Exception("API Key is missing")}";
+            $"{_alphaVantageSettings.BaseAddress}/query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={_alphaVantageSettings.ApiKey ?? throw new Exception("API Key is missing")}";
         
         try
         {
