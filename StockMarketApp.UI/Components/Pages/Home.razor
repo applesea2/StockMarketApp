@@ -8,7 +8,7 @@
 
 <PageTitle>Home</PageTitle>
 <div class="searchContainer">
-    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput" />
+    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput"/>
 </div>
 
 @if (isLoading)
@@ -21,7 +21,9 @@
     <ul>
         @foreach (var result in searchDTOResponse.BestMatches)
         {
-            <p>@result.Name (@result.Symbol)</p>
+            <li>
+                @result.Name (@result.Symbol)
+            </li>
         }
     </ul>
 }
