@@ -1,11 +1,27 @@
 using StockMarketApp.UI.Components;
 using System.Reflection.PortableExecutable;
+using ApexCharts;
+using StockMarketApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddHttpClient("ApiHttpClient", configureClient =>
+{
+    string? baseAddress = builder.Configuration.GetValue<string>("StockMarketApp.Api:BaseAddress");
+    try
+    {
+        configureClient.BaseAddress = new Uri(baseAddress);
+    }
+    catch (InvalidOperationException e)
+    {
+        throw new InvalidOperationException("Missing base url configuration");
+    }
+});
+
+builder.Services.AddApexCharts();
 
 var app = builder.Build();
 

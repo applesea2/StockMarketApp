@@ -1,3 +1,4 @@
+using StockMarketApp.Api.Configurations;
 using StockMarketApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddControllers();
+
+builder.Services.Configure<AlphaVantageSettings>(
+    builder.Configuration.GetSection(AlphaVantageSettings.SectionName)
+);
 
 builder.Services.AddHttpClient<IStockDataService, StockDataService>();
 

@@ -1,0 +1,90 @@
+﻿@page "/StockDetails/{SearchTerm}"
+
+@using System.Text.Json
+@using ApexCharts
+@using StockMarketApp.DTO
+@using StockMarketApp.UI.Components.Models
+@inject IApexChartService ApexChartService
+@inject IHttpClientFactory HttpClientFactory
+
+
+<h1>Stock Details for @SearchTerm...</h1>
+@if (isLoading)
+{
+    <p>Loading details for @SearchTerm...</p>
+}
+
+else if (stocks != null && stocks.Any())
+{
+    <ApexChart TItem="Stock"
+               XAxisType="XAxisType.Datetime">
+
+        <ApexCandleSeries TItem="Stock"
+                          Items="stocks"
+                          Name="Apex Stock Price"
+                          XValue="@(e => e.Date.Day)"
+                          Open="@(e => e.Open)"
+                          High="@(e => e.High)"
+                          Low="@(e => e.Low)"
+                          Close="@(e => e.Close)"
+                          OrderByDescending="e=> e.X"
+                          Stroke="@(new SeriesStroke{ Width=1 })" />
+        <ApexPointSeries Items=stocks
+                         TItem="Stock"
+                         Name="Line"
+                         SeriesType="SeriesType.Line"
+                         XValue="@(e => e.Date.Day)"
+                         YValue="@(e => e.Low - 3)"
+                         OrderByDescending="@(e=> e.X)"
+                         Stroke="@(new SeriesStroke{ Width=3, DashSpace=3, Color="#ff3300" })" />
+    </ApexChart>
+}
+
+@code {
+    private IntradayResponseDTO StockPrices { get; set; }
+    
+    private List<Stock> stocks = new List<Stock>();
+
+    private HttpClient? _httpClient;
+    
+    [Parameter]
+    public string? SearchTerm { get; set; }
+
+    private bool isLoading = false;
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var request = new HttpRequestMessage(HttpMethod.Get, $"api/StockData/intraday/{SearchTerm}");
+        request.Headers.Add("Accept", "application/json");
+        request.Headers.Add("User-Agent", "StockmarketApp.Api");
+
+        _httpClient = HttpClientFactory.CreateClient("ApiHttpClient");
+        var response = await _httpClient.SendAsync(request);
+
+        try
+        {
+            await using Stream responseStream = await response.Content.ReadAsStreamAsync();
+            {
+                StockPrices = await JsonSerializer.DeserializeAsync<IntradayResponseDTO>(responseStream);
+
+                stocks = StockPrices.TimeSeries.Select(KeyValuePair => new Stock
+                    {
+                        Date = DateTime.Parse(KeyValuePair.Key),
+                        Open = decimal.Parse(KeyValuePair.Value.Open),
+                        High = decimal.Parse(KeyValuePair.Value.High),
+                        Low = decimal.Parse(KeyValuePair.Value.Low),
+                        Close = decimal.Parse(KeyValuePair.Value.Close),
+
+                    }).OrderBy(s => s.Date).ToList();
+                    StateHasChanged();
+                
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+}

@@ -1,18 +1,125 @@
 ﻿@page "/"
+@inject IHttpClientFactory HttpClientFactory
+@inject IConfiguration Configuration
+@inject NavigationManager NavigationManager
+@using StockMarketApp.DTO
 
 <PageTitle>Home</PageTitle>
 <div class="searchContainer">
-    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" @onkeydown="HandleKeyDown"/>
+    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput" @onkeydown="HandleKeyDown"/>
 </div>
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+
+@if (searchDTOResponse?.BestMatches != null && searchDTOResponse.BestMatches.Any())
+{
+    <ul>
+        @foreach (var result in searchDTOResponse.BestMatches)
+        {
+            <li>
+                @result.Name (@result.Symbol)
+            </li>
+        }
+    </ul>
+}
+
+else if (hasSearched && !isLoading)
+{
+    <p>No results found</p>
+}
 
 @code
 {
-    private void HandleKeyDown(KeyboardEventArgs args)
+    private string? searchTerm;
+    private SearchDTOResponse? searchDTOResponse;
+    private bool isLoading = false;
+    private bool hasSearched = false;
+    private Timer _debounceTimer;
+    private const int debounceTimeout = 500;
+    private HttpClient? _httpClient;
+
+    protected override void OnInitialized()
     {
-        Console.WriteLine($"Key pressed: {args.Key}");
-        if (args.Key == "Enter")
+        _httpClient = HttpClientFactory.CreateClient("ApiHttpClient");
+        base.OnInitialized();
+    }
+    
+    private void HandleInput(ChangeEventArgs eventArgs)
+    {
+        searchTerm = eventArgs.Value?.ToString();
+        hasSearched = false;
+
+        _debounceTimer?.Dispose();
+
+        _debounceTimer = new Timer(
+            callback: c => InvokeAsync(Search),
+            state: null,
+            dueTime: TimeSpan.FromMilliseconds(debounceTimeout),
+            period: Timeout.InfiniteTimeSpan
+        );
+    }
+    
+    private async Task Search()
+    {
+        if (string.IsNullOrWhiteSpace(searchTerm))
         {
-            Console.WriteLine("Search triggered!");
+            searchDTOResponse = null;
+            hasSearched = false;
+            isLoading = false;
+            StateHasChanged();
+            return;
         }
+
+        isLoading = true;
+        hasSearched = true;
+        searchDTOResponse = null;
+        StateHasChanged();
+
+        try
+        {
+            string requestUrl = $"/api/StockData/search/{searchTerm}";
+            searchDTOResponse = await _httpClient.GetFromJsonAsync<SearchDTOResponse>(requestUrl);
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle HTTP errors (non-success status codes, network issues)
+            Console.Error.WriteLine($"API call failed: {ex.Message}");
+            searchDTOResponse = null; // Ensure response is null on error
+        }
+        catch (Exception ex) // Catch other potential errors (e.g., serialization)
+        {
+            Console.Error.WriteLine($"An error occurred: {ex.Message}");
+            searchDTOResponse = null;
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+        _debounceTimer?.Dispose();
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs arg)
+    {
+        if (arg.Key == "Enter" && !string.IsNullOrWhiteSpace(searchTerm))
+        {
+            NavigateToDetails(searchTerm);
+        }
+    }
+
+    private void NavigateToDetails(string term)
+    {
+        if (string.IsNullOrWhiteSpace(term))
+        {
+            return;
+        }
+        NavigationManager.NavigateTo($"/StockDetails/{term}");
     }
 }

@@ -11,4 +11,8 @@
       <ProjectReference Include="..\StockMarketApp.DTO\StockMarketApp.DTO.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Blazor-ApexCharts" Version="5.1.0" />
+    </ItemGroup>
+
 </Project>

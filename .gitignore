@@ -3,3 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.idea/.idea.StockMarketApp/.idea
+/.vs
+/StockMarketApp.Api/StockMarketApp.Api.csproj.user
+/StockMarketApp.UI/StockMarketApp.csproj.user
+/StockMarketApp.UI/StockMarketApp.UI.csproj.user
+/StockMarketApp.sln.DotSettings.user
+/StockMarketApp.slnLaunch.user

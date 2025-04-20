@@ -9,9 +9,9 @@ public class IntradayResponseDTO
     public MetaData? MetaData { get; set; }
     
     // This will hold the actual time series data directly, based on the interval.
-    [JsonPropertyName("TimeSeries")]
+    [JsonPropertyName("Time Series")]
     public Dictionary<string, TimeSeriesEntry>? TimeSeries { get; set; }
-    
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? AdditionalData { get; set; }
 }
