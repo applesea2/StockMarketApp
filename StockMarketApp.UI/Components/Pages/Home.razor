@@ -1,14 +1,12 @@
 ﻿@page "/"
 @inject IHttpClientFactory HttpClientFactory
 @inject IConfiguration Configuration
-
+@inject NavigationManager NavigationManager
 @using StockMarketApp.DTO
-@using StockMarketApp.Services
-
 
 <PageTitle>Home</PageTitle>
 <div class="searchContainer">
-    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput"/>
+    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput" @onkeydown="HandleKeyDown"/>
 </div>
 
 @if (isLoading)
@@ -35,7 +33,7 @@ else if (hasSearched && !isLoading)
 
 @code
 {
-    private string? searchTerm = string.Empty;
+    private string? searchTerm;
     private SearchDTOResponse? searchDTOResponse;
     private bool isLoading = false;
     private bool hasSearched = false;
@@ -48,7 +46,7 @@ else if (hasSearched && !isLoading)
         _httpClient = HttpClientFactory.CreateClient("ApiHttpClient");
         base.OnInitialized();
     }
-
+    
     private void HandleInput(ChangeEventArgs eventArgs)
     {
         searchTerm = eventArgs.Value?.ToString();
@@ -106,5 +104,22 @@ else if (hasSearched && !isLoading)
     public void Dispose()
     {
         _debounceTimer?.Dispose();
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs arg)
+    {
+        if (arg.Key == "Enter" && !string.IsNullOrWhiteSpace(searchTerm))
+        {
+            NavigateToDetails(searchTerm);
+        }
+    }
+
+    private void NavigateToDetails(string term)
+    {
+        if (string.IsNullOrWhiteSpace(term))
+        {
+            return;
+        }
+        NavigationManager.NavigateTo($"/StockDetails/{term}");
     }
 }

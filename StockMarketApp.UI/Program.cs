@@ -1,5 +1,6 @@
 using StockMarketApp.UI.Components;
 using System.Reflection.PortableExecutable;
+using ApexCharts;
 using StockMarketApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,9 @@ builder.Services.AddHttpClient("ApiHttpClient", configureClient =>
         throw new InvalidOperationException("Missing base url configuration");
     }
 });
-    
+
+builder.Services.AddApexCharts();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

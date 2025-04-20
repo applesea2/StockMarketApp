@@ -38,7 +38,7 @@ public class StockDataService : IStockDataService
             
             IntradayResponseDTO? intradayResponseDTO = JsonSerializer.Deserialize<IntradayResponseDTO>(stream);
         
-            string? timeSeriesKey = intradayResponseDTO?.AdditionalData?.Keys?.FirstOrDefault(k => k.Contains("TimeSeries"));
+            string? timeSeriesKey = intradayResponseDTO?.AdditionalData?.Keys?.FirstOrDefault(k => k.Contains("Time Series"));
             
             if (timeSeriesKey != null && intradayResponseDTO != null && 
                 intradayResponseDTO.AdditionalData != null && 
