@@ -1,7 +1,11 @@
 # Stock Market App
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Blazor](https://img.shields.io/badge/Blazor-7.0+-blue.svg) A Blazor Server application for viewing real-time or historical stock market data.
+[![.NET](https://img.shields.io/badge/.NET-9.0+-blue.svg)](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+[![Blazor](https://img.shields.io/badge/Blazor-9.0+-blue.svg)](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor)
+[![AlphaVantage](https://img.shields.io/badge/AlphaVantage-API-blue.svg)](https://www.alphavantage.co/)
+
+A Blazor Server application for viewing real-time or historical stock market data.
 
 ## Table of Contents
 
@@ -28,9 +32,6 @@ Stock Market App is a user-friendly web application built with Blazor Server tha
 
 ## Features
 
-List the main features of your application. Be specific and highlight what users can do.
-
-
 > - **Real-time Stock Quotes:** Fetch and display up-to-date stock prices based on a stock symbol.
 > - **Interactive Candlestick Charts:** Visualize price movements with interactive candlestick charts powered by Blazor-ApexCharts.
 > - **Search Functionality:** Easily search for specific stocks by symbol or company.
@@ -38,10 +39,7 @@ List the main features of your application. Be specific and highlight what users
 
 ## Getting Started
 
-
 ### Prerequisites
-
-List any software or tools that need to be installed before running the application.
 
 > - [.NET SDK](https://dotnet.microsoft.com/download) (version 9.0 or higher recommended)
 > - [Visual Studio](https://visualstudio.microsoft.com/) (with the ASP.NET and web development workload) or [Visual Studio Code](https://code.visualstudio.com/) with the C# extension.
@@ -49,8 +47,6 @@ List any software or tools that need to be installed before running the applicat
 
 ### Installation
 
-> Example:
->
 > 1. Clone the repository to your local machine:
 >
 >    ```bash
@@ -61,16 +57,8 @@ List any software or tools that need to be installed before running the applicat
 > 2. Navigate to the project directory.
 
 ### Configuration
-
-Explain any necessary configuration steps, such as setting up API keys or environment variables.
-
-> Example:
->
-> 1. **API Key:** This application requires an API key from [AlphaVantage](https://www.alphavantage.co/). You can sign up for a free or paid plan on their website: https://www.alphavantage.co/.
->
-> 2. **`appsettings.json`:** Locate the `appsettings.json` file in the `Client` project.
->
-> 3. **Add your API key:** Create or edit the secrets.json generated from .NET Secrets manager and add your API key as follows:
+> 1. **API Key:** This application requires an API key from [AlphaVantage](https://www.alphavantage.co/). You can sign up for a free or paid plan on their website: https://www.alphavantage.co/
+> 2. **Add your API key:** Create or edit the secrets.json generated from .NET Secrets manager and add your API key as follows:
 >
 >    ```json
 >    {
@@ -79,15 +67,9 @@ Explain any necessary configuration steps, such as setting up API keys or enviro
 >    ```
 >
 >    **Important:** Do not commit your actual API key directly into the repository. Consider using user secrets for development and environment variables for production.
->
-> 4. **[Mention any other configuration, like database settings if applicable]**
 
 ### Running the Application
 
-Provide instructions on how to build and run the Blazor application.
-
-> Example:
->
 > 1. Open the solution file (`.sln`) in Visual Studio or navigate to the project directory in your terminal.
 >
 > 2. **Build the application:**
@@ -112,64 +94,32 @@ Provide instructions on how to build and run the Blazor application.
 
 ## Usage
 
-Describe how users can interact with the application and its features. Provide clear steps and examples.
-
 ### Viewing Stock Data
 
-> Example:
->
 > 1. Enter a stock symbol (e.g., AAPL, MSFT, GOOGL) in the search bar located at the top of the page.
 > 2. Click the "Search" button or press Enter.
-> 3. The application will display the current stock quote (if real-time is implemented) and options to view historical data.
+> 3. The application will display the current stock quote and options to view historical data.
 
 ### Using Candlestick Charts
 
-> Example:
->
 > 1. After searching for a stock, you will see an option to view a candlestick chart.
-> 2. Select the desired time interval (e.g., 1 day, 1 week, 1 month) from the dropdown menu (if implemented).
-> 3. The interactive candlestick chart will be displayed, showing the open, high, low, and close prices for the selected period.
-> 4. You can hover over individual candlesticks to see detailed price information.
-> 5. [Mention any interactive features of your chart library, like zooming or panning, if applicable].
-
-### Other Features (if applicable)
-
-Describe any other features your application offers and how to use them.
-
-> Example:
->
-> - **Watchlist:** How to add and manage stocks in a personal watchlist.
-> - **News Feed:** How to access relevant stock market news (if implemented).
-> - **[Any other features]**
+> 2. The interactive candlestick chart will be displayed, showing the open, high, low, and close prices for the selected period.
+> 3. You can hover over individual candlesticks to see detailed price information.
 
 ## Technology Stack
 
-List the main technologies and libraries used in your application.
-
-> Example:
->
 > - [ASP.NET Core](https://dotnet.microsoft.com/en-us/apps/aspnet)
-> - [Blazor WebAssembly](https://dotnet.microsoft.com/en-us/apps/blazor)
+> - [Blazor](https://learn.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-9.0)
 > - [C#](https://dotnet.microsoft.com/en-us/languages/csharp)
 > - [System.Text.Json](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-overview)
 > - [Blazor-ApexCharts](https://github.com/apexcharts/Blazor-ApexCharts)
-> - [Microsoft.Extensions.Http](https://docs.microsoft.com/en-us/dotnet/core/extensions/http)
-> - [Mention any other significant libraries or frameworks]
+> - [System.Net.Http](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.httpclient?view=net-9.0http)
 
 ## API Integration
-
-Briefly explain which API(s) your application integrates with to fetch stock data.
-
-> Example:
->
-> This application utilizes the [Name of your API provider] API to retrieve real-time and historical stock market data. You can find their API documentation here: [Link to API documentation].
+> This application utilizes the AlphaVantage API to retrieve real-time and historical stock market data. You can find their API documentation here: [API documentation](https://www.alphavantage.co/documentation/).
 
 ## Contributing
 
-If you want to encourage contributions from other developers, provide guidelines on how they can contribute to your project.
-
-> Example:
->
 > Contributions are welcome! Please follow these steps:
 >
 > 1. Fork the repository.
@@ -177,27 +127,12 @@ If you want to encourage contributions from other developers, provide guidelines
 > 3. Make your changes and commit them (`git commit -am 'Add some feature'`).
 > 4. Push to the branch (`git push origin feature/your-feature-name`).
 > 5. Create a new Pull Request.
->
-> Please adhere to any coding standards or guidelines mentioned in a `CONTRIBUTING.md` file (if you have one).
 
 ## License
 
-Specify the license under which your application is distributed.
-
-> Example:
->
-> This project is licensed under the [MIT License](LICENSE). See the `LICENSE` file for more information.
+> This project is licensed under the [MIT License](https://opensource.org/license/mit). See the `LICENSE` file for more information.
 
 ## Contact
 
-Provide ways for users and developers to contact you or the project maintainers.
-
-> Example:
->
-> - [Your Name/Organization] - [Your Email]
-> - [Link to your GitHub profile]
-> - [Link to project discussions or issue tracker]
-
----
-
-Feel free to customize this template with more specific details about your Stock Market App. Good luck!
+> - Jesse Stroster - [stroster.jesse@gmail.com](mailto:stroster.jesse@gmail.com)
+> - [Link to GitHub profile](https://github.com/applesea2)
