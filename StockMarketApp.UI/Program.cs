@@ -23,6 +23,8 @@ builder.Services.AddHttpClient("ApiHttpClient", configureClient =>
 
 builder.Services.AddApexCharts();
 
+builder.Services.AddBlazorBootstrap();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

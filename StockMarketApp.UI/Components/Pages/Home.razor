@@ -6,24 +6,13 @@
 
 <PageTitle>Home</PageTitle>
 <div class="searchContainer">
-    <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput" @onkeydown="HandleKeyDown"/>
-    <button class="btn btn-primary" @onclick="() => NavigateToDetails(searchTerm)">Search</button>
+    <AutoComplete class="wide-search-box" TItem="SearchDTO" @bind-Value="searchTerm" DataProvider="Search" PropertyName="Name" Size="AutoCompleteSize.Large" Placeholder="What stock can we help you find?" OnChanged="(SearchDTO searchDTO) => OnItemSelected(searchDTO)">
+    </AutoComplete> 
 </div>
 
 @if (isLoading)
 {
     <p>Loading...</p>
-}
-
-@if (searchDTOResponse?.BestMatches != null && searchDTOResponse.BestMatches.Any())
-{
-    <InputSelect @bind-Value="searchTerm" class="rounded auto-wi" style="width: 34ch" onselect="NavigateToDetails">
-        <option value="">Select a stock</option>
-        @foreach (var result in searchDTOResponse.BestMatches)
-        {
-            <option value="@result.Symbol">@result.Name (@result.Symbol)</option>
-        }
-    </InputSelect>
 }
 
 else if (hasSearched && !isLoading)
@@ -37,7 +26,6 @@ else if (hasSearched && !isLoading)
     private SearchDTOResponse? searchDTOResponse;
     private bool isLoading = false;
     private bool hasSearched = false;
-    private Timer _debounceTimer;
     private const int debounceTimeout = 500;
     private HttpClient? _httpClient;
 
@@ -46,64 +34,46 @@ else if (hasSearched && !isLoading)
         _httpClient = HttpClientFactory.CreateClient("ApiHttpClient");
         base.OnInitialized();
     }
-    
-    private void HandleInput(ChangeEventArgs eventArgs)
+
+    private async Task<AutoCompleteDataProviderResult<SearchDTO>> Search(AutoCompleteDataProviderRequest<SearchDTO> searchTerms)
     {
-        searchTerm = eventArgs.Value?.ToString();
-        hasSearched = false;
-
-        _debounceTimer?.Dispose();
-
-        _debounceTimer = new Timer(
-            callback: c => InvokeAsync(Search),
-            state: null,
-            dueTime: TimeSpan.FromMilliseconds(debounceTimeout),
-            period: Timeout.InfiniteTimeSpan
-        );
-    }
-    
-    private async Task Search()
-    {
-        if (string.IsNullOrWhiteSpace(searchTerm))
-        {
-            searchDTOResponse = null;
-            hasSearched = false;
-            isLoading = false;
-            StateHasChanged();
-            return;
-        }
-
-        isLoading = true;
-        hasSearched = true;
-        searchDTOResponse = null;
-        StateHasChanged();
-
         try
         {
-            string requestUrl = $"/api/StockData/search/{searchTerm}";
+            string requestUrl = $"/api/StockData/search/{searchTerms.Filter.Value}";
             searchDTOResponse = await _httpClient.GetFromJsonAsync<SearchDTOResponse>(requestUrl);
+            return await Task.FromResult(new AutoCompleteDataProviderResult<SearchDTO>
+                {
+                    Data = searchDTOResponse?.BestMatches,
+                    TotalCount = searchDTOResponse?.BestMatches?.Count ?? 0
+                });
         }
         catch (HttpRequestException ex)
         {
             // Handle HTTP errors (non-success status codes, network issues)
             Console.Error.WriteLine($"API call failed: {ex.Message}");
             searchDTOResponse = null; // Ensure response is null on error
+            return new AutoCompleteDataProviderResult<SearchDTO>
+                {
+                    Data = Enumerable.Empty<SearchDTO>(),
+                    TotalCount = 0
+                };
+        
         }
         catch (Exception ex) // Catch other potential errors (e.g., serialization)
         {
             Console.Error.WriteLine($"An error occurred: {ex.Message}");
             searchDTOResponse = null;
+            return new AutoCompleteDataProviderResult<SearchDTO>
+                {
+                    Data = Enumerable.Empty<SearchDTO>(),
+                    TotalCount = 0
+                };
         }
         finally
         {
             isLoading = false;
-            StateHasChanged();
+            // StateHasChanged();
         }
-    }
-
-    public void Dispose()
-    {
-        _debounceTimer?.Dispose();
     }
 
     private void HandleKeyDown(KeyboardEventArgs arg)
@@ -112,6 +82,15 @@ else if (hasSearched && !isLoading)
         {
             NavigateToDetails(searchTerm);
         }
+    }
+
+    private void OnItemSelected(SearchDTO selectedItem)
+    {
+        if (selectedItem == null || string.IsNullOrWhiteSpace(selectedItem.Symbol))
+        {
+            return;
+        }
+        NavigateToDetails(selectedItem.Symbol);
     }
 
     private void NavigateToDetails(string term)
