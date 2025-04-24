@@ -7,6 +7,7 @@
 <PageTitle>Home</PageTitle>
 <div class="searchContainer">
     <input type="text" class="rounded auto-wi" placeholder="What stock can we help you find?" style="width: 34ch" value="@searchTerm" @oninput="HandleInput" @onkeydown="HandleKeyDown"/>
+    <button class="btn btn-primary" @onclick="() => NavigateToDetails(searchTerm)">Search</button>
 </div>
 
 @if (isLoading)
@@ -16,19 +17,18 @@
 
 @if (searchDTOResponse?.BestMatches != null && searchDTOResponse.BestMatches.Any())
 {
-    <ul>
+    <InputSelect @bind-Value="searchTerm" class="rounded auto-wi" style="width: 34ch" onselect="NavigateToDetails">
+        <option value="">Select a stock</option>
         @foreach (var result in searchDTOResponse.BestMatches)
         {
-            <li>
-                @result.Name (@result.Symbol)
-            </li>
+            <option value="@result.Symbol">@result.Name (@result.Symbol)</option>
         }
-    </ul>
+    </InputSelect>
 }
 
 else if (hasSearched && !isLoading)
 {
-    <p>No results found</p>
+    <p class="text-light">No results found</p>
 }
 
 @code

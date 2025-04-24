@@ -17,12 +17,12 @@
 else if (stocks != null && stocks.Any())
 {
     <ApexChart TItem="Stock"
-               XAxisType="XAxisType.Datetime">
+               XAxisType="XAxisType.Datetime" Width="1000" Height="600">
 
         <ApexCandleSeries TItem="Stock"
                           Items="stocks"
-                          Name="Apex Stock Price"
-                          XValue="@(e => e.Date.Day)"
+                          Name="Stock Price"
+                          XValue="@(e => e.Date)"
                           Open="@(e => e.Open)"
                           High="@(e => e.High)"
                           Low="@(e => e.Low)"
@@ -31,9 +31,9 @@ else if (stocks != null && stocks.Any())
                           Stroke="@(new SeriesStroke{ Width=1 })" />
         <ApexPointSeries Items=stocks
                          TItem="Stock"
-                         Name="Line"
+                         Name="Stock Price"
                          SeriesType="SeriesType.Line"
-                         XValue="@(e => e.Date.Day)"
+                         XValue="@(e => e.Date)"
                          YValue="@(e => e.Low - 3)"
                          OrderByDescending="@(e=> e.X)"
                          Stroke="@(new SeriesStroke{ Width=3, DashSpace=3, Color="#ff3300" })" />
