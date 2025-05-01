@@ -97,8 +97,8 @@ Stock Market App is a user-friendly web application built with Blazor Server tha
 ### Viewing Stock Data
 
 > 1. Enter a stock symbol (e.g., AAPL, MSFT, GOOGL) in the search bar located at the top of the page.
-> 2. Click the "Search" button or press Enter.
-> 3. The application will display the current stock quote and options to view historical data.
+> 2. An overlay will display with matching symbols. Select the company you are looking for.
+> 3. The application will display the current stock quote and options to view historical data as a candlestick chart.
 
 ### Using Candlestick Charts
 
