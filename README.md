@@ -49,15 +49,15 @@ Stock Market App is a user-friendly web application built with Blazor Server tha
 
 > 1. Clone the repository to your local machine:
 >
->    ```bash
->    git clone https://github.com/applesea2/StockMarketApp
+>    ```powershell
+>    git clone https://github.com/applesea2/StockMarketApp.git
 >    cd StockMarketApp
 >    ```
 >
 > 2. Navigate to the project directory.
 
 ### Configuration
-> 1. **API Key:** This application requires an API key from [AlphaVantage](https://www.alphavantage.co/). You can sign up for a free or paid plan on their website: https://www.alphavantage.co/
+> 1. **API Key:** This application requires an API key from [AlphaVantage](https://www.alphavantage.co/). You can sign up for a free or paid plan on their website.
 > 2. **Add your API key:** Create or edit the secrets.json generated from .NET Secrets manager and add your API key as follows:
 >
 >    ```json
@@ -86,7 +86,7 @@ Stock Market App is a user-friendly web application built with Blazor Server tha
 >    - **Visual Studio:** Press `F5` (Start Debugging) or `Ctrl+F5` (Start Without Debugging).
 >    - **.NET CLI:** Navigate to the `Client` project directory and run:
 >
->      ```bash
+>      ```powershell
 >      dotnet run
 >      ```
 >
