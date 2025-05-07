@@ -3,8 +3,8 @@
 @inject IConfiguration Configuration
 @inject NavigationManager NavigationManager
 @using StockMarketApp.DTO
-
 <PageTitle>Home</PageTitle>
+
 <div class="searchContainer">
     <AutoComplete class="wide-search-box" TItem="SearchDTO" @bind-Value="searchTerm" DataProvider="Search" PropertyName="Name" Size="AutoCompleteSize.Large" Placeholder="What stock can we help you find?" OnChanged="(SearchDTO searchDTO) => OnItemSelected(searchDTO)">
     </AutoComplete> 

@@ -1,4 +1,9 @@
 ﻿
+::deep .wide-search-box {
+        width: 35rem !important; /* Keep this */
+        flex: 0 1 auto !important; /* Prevent growing, allow shrinking, base on content */
+
+}
 .searchContainer {
     display: flex;
     justify-content: center;
@@ -8,11 +13,11 @@
 }
 
 /* More specific selector to override input-group styles */
-.searchContainer .input-group .form-control {
+/*.searchContainer .input-group .form-control {
     flex: 0 0 600px !important;
     width: 600px !important;
     min-width: 300px;
-}
+}*/
 
 
 

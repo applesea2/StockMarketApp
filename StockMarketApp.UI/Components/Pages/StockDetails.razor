@@ -21,7 +21,7 @@ else if (stocks != null && stocks.Any())
 
         <ApexCandleSeries TItem="Stock"
                           Items="stocks"
-                          Name="Stock Price"
+                          Name="Stock Price Chart"
                           XValue="@(e => e.Date)"
                           Open="@(e => e.Open)"
                           High="@(e => e.High)"
@@ -31,7 +31,7 @@ else if (stocks != null && stocks.Any())
                           Stroke="@(new SeriesStroke{ Width=1 })" />
         <ApexPointSeries Items=stocks
                          TItem="Stock"
-                         Name="Stock Price"
+                         Name="Stock Price Line"
                          SeriesType="SeriesType.Line"
                          XValue="@(e => e.Date)"
                          YValue="@(e => e.Low - 3)"
